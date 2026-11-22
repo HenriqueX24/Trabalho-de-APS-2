@@ -1,0 +1,48 @@
+# TicketFlow: um container por microsserviço, cada um com seu volume (banco SQLite próprio).
+# Os containers se encontram pelo nome na rede ticketflow-net.
+services:
+  eventos-service:
+    build: ./eventos-service
+    ports: ["8081:8081"]
+    environment:
+      - NOTIFICACOES_URL=http://notificacoes-service:8084
+      - SEED_EXEMPLOS=true
+    volumes: ["eventos-data:/data"]
+    restart: unless-stopped
+
+  ingressos-service:
+    build: ./ingressos-service
+    ports: ["8082:8082"]
+    environment:
+      - EVENTOS_URL=http://eventos-service:8081
+      - PAGAMENTO_URL=http://pagamento-service:8083
+      - NOTIFICACOES_URL=http://notificacoes-service:8084
+    volumes: ["ingressos-data:/data"]
+    restart: unless-stopped
+
+  pagamento-service:
+    build: ./pagamento-service
+    ports: ["8083:8083"]
+    volumes: ["pagamento-data:/data"]
+    restart: unless-stopped
+
+  notificacoes-service:
+    build: ./notificacoes-service
+    ports: ["8084:8084"]
+    volumes: ["notificacoes-data:/data"]
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports: ["8080:8080"]
+    restart: unless-stopped
+
+networks:
+  default:
+    name: ticketflow-net
+
+volumes:
+  eventos-data:
+  ingressos-data:
+  pagamento-data:
+  notificacoes-data:
