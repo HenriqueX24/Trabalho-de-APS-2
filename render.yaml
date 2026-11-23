@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: ticketflow-frontend
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/frontend/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/frontend
+    plan: free
+
+  - type: web
+    name: ticketflow-eventos
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/eventos-service/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/eventos-service
+    plan: free
+
+  - type: web
+    name: ticketflow-ingressos
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/ingressos-service/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/ingressos-service
+    plan: free
+
+  - type: web
+    name: ticketflow-notificacoes
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/notificacoes-service/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/notificacoes-service
+    plan: free
+
+  - type: web
+    name: ticketflow-pagamento
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/pagamento-service/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/pagamento-service
+    plan: free
