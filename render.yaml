@@ -1,23 +1,35 @@
 services:
   - type: web
-    name: ticketflow-frontend
-    runtime: docker
-    dockerfilePath: ./ticketflow/codigo-fonte/frontend/Dockerfile
-    dockerContext: ./ticketflow/codigo-fonte/frontend
-    plan: free
-
-  - type: web
     name: ticketflow-eventos
     runtime: docker
     dockerfilePath: ./ticketflow/codigo-fonte/eventos-service/Dockerfile
     dockerContext: ./ticketflow/codigo-fonte/eventos-service
     plan: free
+    envVars:
+      - key: NOTIFICACOES_URL
+        value: https://ticketflow-notificacoes.onrender.com
+      - key: SEED_EXEMPLOS
+        value: "true"
 
   - type: web
     name: ticketflow-ingressos
     runtime: docker
     dockerfilePath: ./ticketflow/codigo-fonte/ingressos-service/Dockerfile
     dockerContext: ./ticketflow/codigo-fonte/ingressos-service
+    plan: free
+    envVars:
+      - key: EVENTOS_URL
+        value: https://ticketflow-eventos.onrender.com
+      - key: PAGAMENTO_URL
+        value: https://ticketflow-pagamento.onrender.com
+      - key: NOTIFICACOES_URL
+        value: https://ticketflow-notificacoes.onrender.com
+
+  - type: web
+    name: ticketflow-pagamento
+    runtime: docker
+    dockerfilePath: ./ticketflow/codigo-fonte/pagamento-service/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/pagamento-service
     plan: free
 
   - type: web
@@ -28,8 +40,8 @@ services:
     plan: free
 
   - type: web
-    name: ticketflow-pagamento
+    name: ticketflow-frontend
     runtime: docker
-    dockerfilePath: ./ticketflow/codigo-fonte/pagamento-service/Dockerfile
-    dockerContext: ./ticketflow/codigo-fonte/pagamento-service
+    dockerfilePath: ./ticketflow/codigo-fonte/frontend/Dockerfile
+    dockerContext: ./ticketflow/codigo-fonte/frontend
     plan: free
